@@ -1,42 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <title>แบบประเมินภาวะซึมเศร้า (PHQ-9) และ 8Q</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body { font-family: "Sarabun", sans-serif; margin: 10px 20px; background: #f9f9f9; }
-    h2, h3 { color: #222; }
-    .result { margin-top: 20px; padding: 15px; border-radius: 6px; display: none; }
-    .mild { background: #f9f6d3; color: #4a4a1c; }
-    .moderate { background: #f8e1c1; color: #663a07; }
-    .severe { background: #f2c6c6; color: #770000; }
-    .booking-button {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 10px 20px;
-      background-color: #2a9df4;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-    }
-    label { display: block; margin-top: 12px; }
-    .question { margin-bottom: 10px; }
-  </style>
-</head>
-<body>
-  <h2>แบบประเมินภาวะซึมเศร้า (PHQ-9) และ 8Q</h2>
-
-  <form id="phqForm">
-    <label>ชื่อ
-      <input type="text" id="fname" required />
-    </label>
-    <label>นามสกุล
-      <input type="text" id="lname" required />
-    </label>
-<!DOCTYPE html>
-<html lang="th">
-<head>
   <meta charset="UTF-8">
   <title>แบบประเมินภาวะซึมเศร้า (PHQ-9)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -130,7 +94,7 @@
 </head>
 <body>
   <h1>แบบประเมินภาวะซึมเศร้า (PHQ-9)</h1>
-  <form id="PHQ9Form">
+  <form id="phqForm">
     <div class="section">
       <label>ชื่อ</label><input type="text" name="fname" required>
       <label>นามสกุล</label><input type="text" name="lname" required>
@@ -153,26 +117,17 @@
         <option>บุคคลทั่วไป</option>
       </select>
       <label>คณะ</label>
-            <select id="faculty" name="faculty" required>
-        <option value="">-- เลือกคณะ/วิทยาลัย/สถาบัน --</option>
-        <option value="คณะวิศวกรรมศาสตร์">คณะวิศวกรรมศาสตร์</option>
-        <option value="คณะสถาปัตยกรรม ศิลปะและการออกแบบ">คณะสถาปัตยกรรม ศิลปะและการออกแบบ</option>
-        <option value="คณะครุศาสตร์อุตสาหกรรมและเทคโนโลยี">คณะครุศาสตร์อุตสาหกรรมและเทคโนโลยี</option>
-        <option value="คณะเทคโนโลยีการเกษตร">คณะเทคโนโลยีการเกษตร</option>
-        <option value="คณะวิทยาศาสตร์">คณะวิทยาศาสตร์</option>
-        <option value="คณะเทคโนโลยีสารสนเทศ">คณะเทคโนโลยีสารสนเทศ</option>
-        <option value="คณะอุตสาหกรรมอาหาร">คณะอุตสาหกรรมอาหาร</option>
-        <option value="คณะศิลปศาสตร์">คณะศิลปศาสตร์</option>
-        <option value="คณะบริหารธุรกิจ">คณะบริหารธุรกิจ</option>
-        <option value="คณะแพทยศาสตร์">คณะแพทยศาสตร์</option>
-        <option value="คณะทันตแพทยศาสตร์">คณะทันตแพทยศาสตร์</option>
-        <option value="วิทยาลัยเทคโนโลยีและนวัตกรรมวัสดุ">วิทยาลัยเทคโนโลยีและนวัตกรรมวัสดุ</option>
-        <option value="วิทยาลัยนวัตกรรมการผลิตขั้นสูง">วิทยาลัยนวัตกรรมการผลิตขั้นสูง</option>
-        <option value="วิทยาลัยอุตสาหกรรมการบินนานาชาติ">วิทยาลัยอุตสาหกรรมการบินนานาชาติ</option>
-        <option value="วิทยาลัยวิศวกรรมสังคีต">วิทยาลัยวิศวกรรมสังคีต</option>
-        <option value="วิทยาเขตชุมพรเขตรอุดมศักดิ์จังหวัดชุมพร">วิทยาเขตชุมพรเขตรอุดมศักดิ์จังหวัดชุมพร</option>
-        <option value="สถาบันโคเซ็น">สถาบันโคเซ็น</option>
-        <option value="อื่นๆ">อื่นๆ</option>
+      <select name="faculty" required>
+        <option value="">-- เลือกคณะ --</option>
+        <option>วิศวกรรมศาสตร์</option>
+        <option>สถาปัตยกรรมศาสตร์</option>
+        <option>วิทยาศาสตร์</option>
+        <option>ครุศาสตร์อุตสาหกรรม</option>
+        <option>เทคโนโลยีสารสนเทศ</option>
+        <option>อุตสาหกรรมเกษตร</option>
+        <option>เทคโนโลยีการเกษตร</option>
+        <option>เทคโนโลยีมีเดีย</option>
+        <option>อื่น ๆ</option>
       </select>
     </div>
 
@@ -182,119 +137,77 @@
       <label><input type="checkbox" required> ข้าพเจ้ายินยอม</label>
     </div>
 
-
-
-
-    <fieldset>
-      <legend>PHQ-9: โปรดเลือกคำตอบที่เหมาะสมกับคุณใน 2 สัปดาห์ที่ผ่านมา</legend>
-      <div class="question">1. เบื่อ ไม่สนใจทำอะไร (0-3)
-        <label><input type="radio" name="qPHQ9_0" value="0" required /> ไม่มีเลย</label>
-        <label><input type="radio" name="qPHQ9_0" value="1" /> เป็นบางวัน</label>
-        <label><input type="radio" name="qPHQ9_0" value="2" /> เป็นบ่อย</label>
-        <label><input type="radio" name="qPHQ9_0" value="3" /> เป็นเกือบทุกวัน</label>
-      </div>
-      <!-- เพิ่มคำถาม PHQ9 ให้ครบ 9 ข้อในรูปแบบเดียวกัน -->
-      <div class="question">2. รู้สึกเศร้าหรือหดหู่ใจ
-        <label><input type="radio" name="qPHQ9_1" value="0" required /> ไม่มีเลย</label>
-        <label><input type="radio" name="qPHQ9_1" value="1" /> เป็นบางวัน</label>
-        <label><input type="radio" name="qPHQ9_1" value="2" /> เป็นบ่อย</label>
-        <label><input type="radio" name="qPHQ9_1" value="3" /> เป็นเกือบทุกวัน</label>
-      </div>
-      <div class="question">3. นอนหลับไม่ดี
-        <label><input type="radio" name="qPHQ9_2" value="0" required /> ไม่มีเลย</label>
-        <label><input type="radio" name="qPHQ9_2" value="1" /> เป็นบางวัน</label>
-        <label><input type="radio" name="qPHQ9_2" value="2" /> เป็นบ่อย</label>
-        <label><input type="radio" name="qPHQ9_2" value="3" /> เป็นเกือบทุกวัน</label>
-      </div>
-      <div class="question">4. รู้สึกเหนื่อยหรือไม่มีแรง
-        <label><input type="radio" name="qPHQ9_3" value="0" required /> ไม่มีเลย</label>
-        <label><input type="radio" name="qPHQ9_3" value="1" /> เป็นบางวัน</label>
-        <label><input type="radio" name="qPHQ9_3" value="2" /> เป็นบ่อย</label>
-        <label><input type="radio" name="qPHQ9_3" value="3" /> เป็นเกือบทุกวัน</label>
-      </div>
-      <div class="question">5. เบื่ออาหารหรือกินมากเกินไป
-        <label><input type="radio" name="qPHQ9_4" value="0" required /> ไม่มีเลย</label>
-        <label><input type="radio" name="qPHQ9_4" value="1" /> เป็นบางวัน</label>
-        <label><input type="radio" name="qPHQ9_4" value="2" /> เป็นบ่อย</label>
-        <label><input type="radio" name="qPHQ9_4" value="3" /> เป็นเกือบทุกวัน</label>
-      </div>
-      <div class="question">6. รู้สึกว่าตัวเองล้มเหลว หรือผิดหวังในตัวเอง
-        <label><input type="radio" name="qPHQ9_5" value="0" required /> ไม่มีเลย</label>
-        <label><input type="radio" name="qPHQ9_5" value="1" /> เป็นบางวัน</label>
-        <label><input type="radio" name="qPHQ9_5" value="2" /> เป็นบ่อย</label>
-        <label><input type="radio" name="qPHQ9_5" value="3" /> เป็นเกือบทุกวัน</label>
-      </div>
-      <div class="question">7. สมาธิไม่ดีในการทำสิ่งต่างๆ
-        <label><input type="radio" name="qPHQ9_6" value="0" required /> ไม่มีเลย</label>
-        <label><input type="radio" name="qPHQ9_6" value="1" /> เป็นบางวัน</label>
-        <label><input type="radio" name="qPHQ9_6" value="2" /> เป็นบ่อย</label>
-        <label><input type="radio" name="qPHQ9_6" value="3" /> เป็นเกือบทุกวัน</label>
-      </div>
-      <div class="question">8. เคลื่อนไหวช้าหรือกระสับกระส่ายมากกว่าปกติ
-        <label><input type="radio" name="qPHQ9_7" value="0" required /> ไม่มีเลย</label>
-        <label><input type="radio" name="qPHQ9_7" value="1" /> เป็นบางวัน</label>
-        <label><input type="radio" name="qPHQ9_7" value="2" /> เป็นบ่อย</label>
-        <label><input type="radio" name="qPHQ9_7" value="3" /> เป็นเกือบทุกวัน</label>
-      </div>
-      <div class="question">9. คิดทำร้ายตัวเองหรือคิดฆ่าตัวตาย
-        <label><input type="radio" name="qPHQ9_8" value="0" required /> ไม่มีเลย</label>
-        <label><input type="radio" name="qPHQ9_8" value="1" /> เป็นบางวัน</label>
-        <label><input type="radio" name="qPHQ9_8" value="2" /> เป็นบ่อย</label>
-        <label><input type="radio" name="qPHQ9_8" value="3" /> เป็นเกือบทุกวัน</label>
-      </div>
-    </fieldset>
-
-    <button type="submit">ส่งผลประเมิน</button>
+    <div id="questions"></div>
+    <button type="submit">ส่งแบบประเมิน</button>
+    <div id="result" class="result"></div>
   </form>
 
-  <div id="result" class="result"></div>
-
   <script>
-    const phq9QuestionsCount = 9;
+    const questions = [
+      "รู้สึกเบื่อ ไม่สนใจอยากทำอะไร",
+      "รู้สึกหดหู่ ซึมเศร้า หรือสิ้นหวัง",
+      "หลับยาก หรือหลับๆ ตื่นๆ หรือหลับมากเกินไป",
+      "รู้สึกเหนื่อย ไม่มีแรง",
+      "เบื่ออาหาร หรือกินมากเกินไป",
+      "รู้สึกไม่ดีกับตัวเอง คิดว่าตัวเองล้มเหลว",
+      "สมาธิไม่ดี เวลาทำอะไร เช่น ดูทีวี อ่านหนังสือ",
+      "พูดช้า หรือกระสับกระส่ายจนคนสังเกตเห็น",
+      "คิดว่าถ้าตายไป คงจะดี หรือคิดทำร้ายตนเอง"
+    ];
 
-    function interpretPHQ9(score) {
-      if (score <= 4) return { level: "ไม่มีภาวะซึมเศร้า", advice: "คุณไม่มีภาวะซึมเศร้าในระดับที่ต้องกังวล", class: "mild", link: false };
-      else if (score <= 9) return { level: "ภาวะซึมเศร้าเล็กน้อย", advice: "คุณมีภาวะซึมเศร้าเล็กน้อย แนะนำให้ดูแลตนเองอย่างต่อเนื่อง", class: "mild", link: false };
-      else if (score <= 14) return { level: "ภาวะซึมเศร้าปานกลาง", advice: "คุณมีภาวะซึมเศร้าปานกลาง ควรพบผู้เชี่ยวชาญหรือนักจิตวิทยา", class: "moderate", link: true };
-      else if (score <= 19) return { level: "ภาวะซึมเศร้าค่อนข้างรุนแรง", advice: "คุณมีภาวะซึมเศร้าค่อนข้างรุนแรง ควรรีบพบผู้เชี่ยวชาญ", class: "severe", link: true };
-      else return { level: "ภาวะซึมเศร้ารุนแรง", advice: "คุณมีภาวะซึมเศร้ารุนแรง ควรรีบรับการรักษาอย่างเร่งด่วน", class: "severe", link: true };
+    const choices = ["0 = ไม่เลย", "1 = เป็นบางวัน", "2 = บ่อยครั้ง", "3 = เกือบทุกวัน"];
+
+    function renderQuestions() {
+      const container = document.getElementById("questions");
+      questions.forEach((q, i) => {
+        let qHTML = `<div class="question"><label>${i + 1}. ${q}</label><br>`;
+        choices.forEach((c, j) => {
+          qHTML += `<label><input type="radio" name="q${i}" value="${j}" required> ${c}</label><br>`;
+        });
+        qHTML += `</div>`;
+        container.innerHTML += qHTML;
+      });
     }
 
-    document.getElementById("phqForm").addEventListener("submit", function (e) {
+    function interpret(score) {
+      if (score <= 4) return { level: "ไม่มีภาวะซึมเศร้า", class: "no-risk", advice: "ควรรักษาสุขภาพใจและใช้ชีวิตตามปกติอย่างมีสมดุล" };
+      if (score <= 9) return { level: "ภาวะซึมเศร้าเล็กน้อย", class: "mild", advice: "แนะนำทำกิจกรรมที่ช่วยให้ผ่อนคลายและเฝ้าสังเกตอารมณ์ตนเอง" };
+      if (score <= 14) return { level: "ภาวะซึมเศร้าปานกลาง", class: "moderate", advice: "ควรปรึกษานักจิตวิทยาหรือผู้เชี่ยวชาญ", link: true };
+      if (score <= 19) return { level: "ภาวะซึมเศร้าค่อนข้างรุนแรง", class: "moderate-severe", advice: "ควรเข้ารับการดูแลจากผู้เชี่ยวชาญโดยเร็ว", link: true };
+      return { level: "ภาวะซึมเศร้ารุนแรง", class: "severe", advice: "แนะนำพบจิตแพทย์หรือนักจิตวิทยาอย่างเร่งด่วน", link: true };
+    }
+
+    document.getElementById("phqForm").addEventListener("submit", function(e) {
       e.preventDefault();
-
-      const fname = document.getElementById("fname").value.trim();
-      const lname = document.getElementById("lname").value.trim();
-
-      let phq9Score = 0;
-      for (let i = 0; i < phq9QuestionsCount; i++) {
-        const selected = document.querySelector(`input[name=qPHQ9_${i}]:checked`);
-        if (selected) {
-          phq9Score += parseInt(selected.value);
-        } else {
-          alert("โปรดตอบคำถามข้อที่ " + (i + 1));
-          return;
-        }
+      let score = 0;
+      for (let i = 0; i < questions.length; i++) {
+        const selected = document.querySelector(`input[name=q${i}]:checked`);
+        if (selected) score += parseInt(selected.value);
       }
-
-      const phq9Result = interpretPHQ9(phq9Score);
-
+      const result = interpret(score);
       const box = document.getElementById("result");
-      box.className = `result ${phq9Result.class}`;
+      box.className = `result ${result.class}`;
+      box.innerHTML = `<h3>คะแนนรวม: ${score}</h3><p><strong>${result.level}</strong></p><p>${result.advice}</p>`;
+      if (result.link) {
+        box.innerHTML += `<a class='booking-button' href='https://outlook.office365.com/owa/calendar/GrowthMindCenter@kmitl.ac.th/bookings/' target='_blank'>จองพบนักจิตวิทยา</a>`;
+      }
       box.style.display = "block";
 
-      box.innerHTML = `
-        <h3>ผลการประเมินของ: ${fname} ${lname}</h3>
-        <h3>คะแนนรวม PHQ-9: ${phq9Score} (${phq9Result.level})</h3>
-        <p><strong>สรุปผล:</strong></p>
-        <p>${phq9Result.advice}</p>
-        ${
-          phq9Result.link
-            ? `<a class="booking-button" href="https://outlook.office365.com/owa/calendar/GrowthMindCenter@kmitl.ac.th/bookings/" target="_blank">จองพบนักจิตวิทยา</a>`
-            : ""
-        }
-      `;
+      const formData = new FormData(document.getElementById("phqForm"));
+      const data = Object.fromEntries(formData.entries());
+      data.score = score;
+      data.level = result.level;
+
+      fetch("https://script.google.com/a/macros/kmitl.ac.th/s/AKfycbx5fngqizD7e17P0dHRw-QybmoqrgorUfwf97MVK4mUUryfKuZkdq3TAqvqqeoXpoe49w/exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
     });
+
+    renderQuestions();
   </script>
 </body>
 </html>
