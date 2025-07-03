@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>แบบประเมินภาวะซึมเศร้า (PHQ-9)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background: linear-gradient(to right, #e0f2f1, #fce4ec);
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #00695c;
+    }
+    form {
+      max-width: 900px;
+      background: white;
+      padding: 25px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .question {
+      margin-bottom: 15px;
+      padding: 15px;
+      border-radius: 10px;
+    }
+    .question:nth-child(odd) {
+      background: #f1f8e9;
+    }
+    .question:nth-child(even) {
+      background: #e1f5fe;
+    }
+    .consent-box {
+      background: #ffecb3;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 0.95em;
+      margin-bottom: 20px;
+    }
+    button {
+      background: #00796b;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #004d40;
+    }
+    .result {
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      font-size: 1.1em;
+      display: none;
+    }
+    .no-risk { background: #c8e6c9; color: #256029; }
+    .mild { background: #fff9c4; color: #7f6000; }
+    .moderate { background: #ffe082; color: #6d4c41; }
+    .moderate-severe { background: #ffccbc; color: #bf360c; }
+    .severe { background: #ef9a9a; color: #b71c1c; }
+    .booking-button {
+      display: inline-block;
+      margin-top: 15px;
+      background: #d81b60;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>แบบประเมินภาวะซึมเศร้า (PHQ-9)</h1>
+  <form id="phqForm">
+    <div class="section">
+      <label>ชื่อ</label><input type="text" name="fname" required>
+      <label>นามสกุล</label><input type="text" name="lname" required>
+      <label>เพศ</label>
+      <select name="gender" required>
+        <option value="">-- เลือกเพศ --</option>
+        <option>ชาย</option>
+        <option>หญิง</option>
+      </select>
+      <label>อายุ</label><input type="number" name="age" required>
+      <label>รหัสนักศึกษา</label><input type="text" name="studentId">
+      <label>เบอร์ติดต่อ</label><input type="tel" name="phone">
+      <label>สถานะ</label>
+      <select name="role" required>
+        <option value="">-- เลือกสถานะ --</option>
+        <option>นักเรียน</option>
+        <option>นักศึกษา</option>
+        <option>อาจารย์</option>
+        <option>เจ้าหน้าที่</option>
+        <option>บุคคลทั่วไป</option>
+      </select>
+      <label>คณะ</label>
+      <select name="faculty" required>
+        <option value="">-- เลือกคณะ --</option>
+        <option>วิศวกรรมศาสตร์</option>
+        <option>สถาปัตยกรรมศาสตร์</option>
+        <option>วิทยาศาสตร์</option>
+        <option>ครุศาสตร์อุตสาหกรรม</option>
+        <option>เทคโนโลยีสารสนเทศ</option>
+        <option>อุตสาหกรรมเกษตร</option>
+        <option>เทคโนโลยีการเกษตร</option>
+        <option>เทคโนโลยีมีเดีย</option>
+        <option>อื่น ๆ</option>
+      </select>
+    </div>
+
+    <div class="consent-box">
+      <p><strong>การแสดงความยินยอม:</strong><br>
+      ข้าพเจ้ายินยอมให้มีการประเมินสุขภาพจิตผ่านแบบสอบถามนี้ โดยข้อมูลจะถูกเก็บรักษาเป็นความลับและใช้เพื่อการประเมินและส่งต่อเท่านั้น ตามกฎหมายคุ้มครองข้อมูลส่วนบุคคล (PDPA)</p>
+      <label><input type="checkbox" required> ข้าพเจ้ายินยอม</label>
+    </div>
+
+    <div id="questions"></div>
+    <button type="submit">ส่งแบบประเมิน</button>
+    <div id="result" class="result"></div>
+  </form>
+
+  <script>
+    const questions = [
+      "รู้สึกเบื่อ ไม่สนใจอยากทำอะไร",
+      "รู้สึกหดหู่ ซึมเศร้า หรือสิ้นหวัง",
+      "หลับยาก หรือหลับๆ ตื่นๆ หรือหลับมากเกินไป",
+      "รู้สึกเหนื่อย ไม่มีแรง",
+      "เบื่ออาหาร หรือกินมากเกินไป",
+      "รู้สึกไม่ดีกับตัวเอง คิดว่าตัวเองล้มเหลว",
+      "สมาธิไม่ดี เวลาทำอะไร เช่น ดูทีวี อ่านหนังสือ",
+      "พูดช้า หรือกระสับกระส่ายจนคนสังเกตเห็น",
+      "คิดว่าถ้าตายไป คงจะดี หรือคิดทำร้ายตนเอง"
+    ];
+
+    const choices = ["0 = ไม่เลย", "1 = เป็นบางวัน", "2 = บ่อยครั้ง", "3 = เกือบทุกวัน"];
+
+    function renderQuestions() {
+      const container = document.getElementById("questions");
+      questions.forEach((q, i) => {
+        let qHTML = `<div class="question"><label>${i + 1}. ${q}</label><br>`;
+        choices.forEach((c, j) => {
+          qHTML += `<label><input type="radio" name="q${i}" value="${j}" required> ${c}</label><br>`;
+        });
+        qHTML += `</div>`;
+        container.innerHTML += qHTML;
+      });
+    }
+
+    function interpret(score) {
+      if (score <= 4) return { level: "ไม่มีภาวะซึมเศร้า", class: "no-risk", advice: "ควรรักษาสุขภาพใจและใช้ชีวิตตามปกติอย่างมีสมดุล" };
+      if (score <= 9) return { level: "ภาวะซึมเศร้าเล็กน้อย", class: "mild", advice: "แนะนำทำกิจกรรมที่ช่วยให้ผ่อนคลายและเฝ้าสังเกตอารมณ์ตนเอง" };
+      if (score <= 14) return { level: "ภาวะซึมเศร้าปานกลาง", class: "moderate", advice: "ควรปรึกษานักจิตวิทยาหรือผู้เชี่ยวชาญ", link: true };
+      if (score <= 19) return { level: "ภาวะซึมเศร้าค่อนข้างรุนแรง", class: "moderate-severe", advice: "ควรเข้ารับการดูแลจากผู้เชี่ยวชาญโดยเร็ว", link: true };
+      return { level: "ภาวะซึมเศร้ารุนแรง", class: "severe", advice: "แนะนำพบจิตแพทย์หรือนักจิตวิทยาอย่างเร่งด่วน", link: true };
+    }
+
+    document.getElementById("phqForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      let score = 0;
+      for (let i = 0; i < questions.length; i++) {
+        const selected = document.querySelector(`input[name=q${i}]:checked`);
+        if (selected) score += parseInt(selected.value);
+      }
+      const result = interpret(score);
+      const box = document.getElementById("result");
+      box.className = `result ${result.class}`;
+      box.innerHTML = `<h3>คะแนนรวม: ${score}</h3><p><strong>${result.level}</strong></p><p>${result.advice}</p>`;
+      if (result.link) {
+        box.innerHTML += `<a class='booking-button' href='https://outlook.office365.com/owa/calendar/GrowthMindCenter@kmitl.ac.th/bookings/' target='_blank'>จองพบนักจิตวิทยา</a>`;
+      }
+      box.style.display = "block";
+
+      const formData = new FormData(document.getElementById("phqForm"));
+      const data = Object.fromEntries(formData.entries());
+      data.score = score;
+      data.level = result.level;
+      console.log("ข้อมูลหลังบ้าน:", data);
+    });
+
+    renderQuestions();
+  </script>
+</body>
+</html>
