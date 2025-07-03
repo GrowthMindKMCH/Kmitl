@@ -83,6 +83,16 @@
       margin-bottom: 20px;
       border: 1px solid #ffeb3b;
     }
+    .action-buttons {
+      display: flex;
+      gap: 15px; /* Space between buttons */
+      margin-top: 20px;
+    }
+    .action-buttons button {
+      flex: 1; /* Make buttons take equal width */
+      width: auto; /* Override 100% width */
+    }
+
     button {
       background: #00796b; /* Teal */
       color: white;
@@ -141,6 +151,9 @@
         font-size: 1.2em;
         font-weight: bold;
         color: #00796b;
+    }
+    #submitButton {
+        display: none; /* Hide submit button initially */
     }
   </style>
 </head>
@@ -202,6 +215,12 @@
     <h2>แบบประเมินภาวะซึมเศร้า (PHQ-9)</h2>
     <p>ในช่วง 2 สัปดาห์ที่ผ่านมา ท่านมีอาการเหล่านี้บ่อยแค่ไหน</p>
     <div id="questionsPHQ9"></div>
+
+    <div class="action-buttons">
+        <button type="button" id="checkPHQ9Result">ตรวจสอบผล PHQ-9</button>
+    </div>
+    
+    <div id="phq9OnlyResult" class="result" style="display: none;"></div>
 
     <div id="questions8Q">
       <h2>แบบประเมิน 8Q</h2>
@@ -267,8 +286,8 @@
       </div>
     </div>
 
-    <button type="submit">ส่งแบบประเมิน</button>
-    <div id="result" class="result"></div>
+    <button type="submit" id="submitButton">ส่งแบบประเมิน</button>
+    <div id="finalResult" class="result" style="display: none;"></div>
   </form>
 
   <script>
@@ -341,44 +360,6 @@
     document.addEventListener("DOMContentLoaded", () => {
         renderPHQ9Questions();
 
-        // Add event listeners for PHQ-9 Q9 to show/hide 8Q
-        document.querySelectorAll('input[name="qPHQ9_8"]').forEach(radio => {
-            radio.addEventListener('change', (event) => {
-                const q8QContainer = document.getElementById("questions8Q");
-                const additional8Q = document.getElementById("additional8Q");
-                if (parseInt(event.target.value) > 0) { // If Q9 is 1, 2, or 3
-                    q8QContainer.style.display = "block";
-                    additional8Q.style.display = "block";
-                    // Make all 8Q radio buttons required
-                    document.querySelectorAll('#questions8Q input[type="radio"]').forEach(radio8Q => {
-                        radio8Q.setAttribute('required', 'required');
-                    });
-                    // For q8Q6 (checkbox), ensure at least one is checked if 8Q is active
-                    const q8Q6Checkboxes = document.querySelectorAll('input[name="q8Q6_checkbox"]');
-                    q8Q6Checkboxes.forEach(cb => cb.removeAttribute('required')); // Remove required for individual checkboxes
-                    if (q8Q6Checkboxes.length > 0) {
-                        const form = document.getElementById('phqForm');
-                        form.setAttribute('onsubmit', 'return validate8Q6()');
-                    }
-                } else {
-                    q8QContainer.style.display = "none";
-                    additional8Q.style.display = "none";
-                    // Remove required from all 8Q radio buttons
-                    document.querySelectorAll('#questions8Q input[type="radio"]').forEach(radio8Q => {
-                        radio8Q.removeAttribute('required');
-                        radio8Q.checked = false; // Uncheck them
-                    });
-                    // Remove required for q8Q6 and uncheck them
-                    document.querySelectorAll('input[name="q8Q6_checkbox"]').forEach(cb => {
-                        cb.removeAttribute('required');
-                        cb.checked = false;
-                    });
-                    const form = document.getElementById('phqForm');
-                    form.removeAttribute('onsubmit'); // Remove validation for 8Q6
-                }
-            });
-        });
-
         // Function to validate at least one checkbox is selected for q8Q6 if 8Q is visible
         window.validate8Q6 = function() {
             const q8QContainer = document.getElementById("questions8Q");
@@ -392,143 +373,231 @@
             }
             return true;
         };
-    });
 
-    document.getElementById("phqForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
-
-      let phq9Score = 0;
-      // Collect individual PHQ9 question values and sum them for total score
-      for (let i = 0; i < phq9Questions.length; i++) {
-        const selected = document.querySelector(`input[name=qPHQ9_${i}]:checked`);
-        if (selected) {
-            phq9Score += parseInt(selected.value);
-        }
-      }
-
-      let q8Score = 0;
-      const q8QContainer = document.getElementById("questions8Q");
-      let is8QActive = q8QContainer.style.display === "block";
-
-      if (is8QActive) {
-          // Validate 8Q6 checkbox if 8Q is active
-          if (!validate8Q6()) {
-            return; // Stop submission if validation fails
-          }
-          // Calculate 8Q score and collect individual 8Q question values
-          // Note: q8Q1 to q8Q5 and q8Q7, q8Q8 are single-choice radios.
-          // q8Q6 is a multi-choice checkbox that only contributes 1 if any risky method is selected.
-          for (let i = 0; i < Q8Questions.length; i++) {
-              if (i === 5) { // For Q6 (checkboxes)
-                  const selectedCheckboxes = document.querySelectorAll(`input[name="q8Q6_checkbox"]:checked`);
-                  if (Array.from(selectedCheckboxes).some(cb => cb.value === "0")) {
-                      q8Score += 0; // If "ไม่เคยทำร้ายตนเอง" is chosen, no additional score from this question
-                  } else if (selectedCheckboxes.length > 0) {
-                      q8Score += 1; // If any other risky method is chosen, add 1 to the score
-                  }
-              } else { // For radio questions
-                  const selected = document.querySelector(`input[name=q8Q${i + 1}]:checked`);
-                  if (selected) {
-                      q8Score += parseInt(selected.value);
-                  }
-              }
-          }
-      }
-
-      const phq9Result = interpretPHQ9(phq9Score);
-      let finalAdvice = phq9Result.advice;
-      let finalClass = phq9Result.class;
-      let showBookingLink = phq9Result.link;
-      let q8QResult = null;
-
-
-      if (is8QActive) {
-          q8QResult = interpret8Q(q8Score);
-          // Prioritize 8Q result if it's more severe or if 8Q was triggered
-          if (q8QResult.level !== "ไม่มีความเสี่ยงต่อการฆ่าตัวตาย") {
-              finalAdvice = q8QResult.advice;
-              finalClass = q8QResult.class;
-              showBookingLink = q8QResult.link;
-          } else {
-              // If 8Q triggered but score is 0, still indicate potential need for help if PHQ9 is high
-              if (phq9Result.level === "ภาวะซึมเศร้าปานกลาง" || phq9Result.level === "ภาวะซึมเศร้าค่อนข้างรุนแรง" || phq9Result.level === "ภาวะซึมเศร้ารุนแรง") {
-                 finalAdvice = phq9Result.advice;
-                 finalClass = phq9Result.class;
-                 showBookingLink = phq9Result.link;
-              }
-          }
-      }
-
-      const box = document.getElementById("result");
-      box.className = `result ${finalClass}`;
-      let resultHTML = `<h3>คะแนนรวม PHQ-9: ${phq9Score} (${phq9Result.level})</h3>`;
-      if (is8QActive) {
-          resultHTML += `<h3>คะแนนรวม 8Q: ${q8Score} (${q8QResult.level})</h3>`;
-      }
-      resultHTML += `<p><strong>สรุปผล:</strong></p><p>${finalAdvice}</p>`;
-
-      if (showBookingLink) {
-        resultHTML += `<a class='booking-button' href='https://outlook.office365.com/owa/calendar/GrowthMindCenter@kmitl.ac.th/bookings/' target='_blank'>จองพบนักจิตวิทยา</a>`;
-      }
-      box.innerHTML = resultHTML;
-      box.style.display = "block";
-
-      const formData = new FormData(document.getElementById("phqForm"));
-      const data = Object.fromEntries(formData.entries());
-
-      // Manually add PHQ-9 individual question values
-      for (let i = 0; i < phq9Questions.length; i++) {
-        const selected = document.querySelector(`input[name=qPHQ9_${i}]:checked`);
-        data[`qPHQ9_${i}`] = selected ? selected.value : '';
-      }
-
-      // Manually add 8Q individual question values (if active)
-      if (is8QActive) {
-        for (let i = 1; i <= 8; i++) {
-            if (i === 6) { // Special handling for 8Q6 checkbox
-                const selectedCheckboxes = Array.from(document.querySelectorAll('input[name="q8Q6_checkbox"]:checked'))
-                                                 .map(cb => Q8Choices[5][parseInt(cb.value)]);
-                data[`q8Q${i}`] = selectedCheckboxes.join(', '); // Store as comma-separated string of chosen labels
-            } else {
-                const selected = document.querySelector(`input[name=q8Q${i}]:checked`);
-                data[`q8Q${i}`] = selected ? selected.value : '';
+        // Event listener for "ตรวจสอบผล PHQ-9" button
+        document.getElementById("checkPHQ9Result").addEventListener("click", function() {
+            // Validate personal info
+            const requiredPersonalInfo = ['fname', 'lname', 'gender', 'age', 'role', 'faculty'];
+            let allPersonalInfoFilled = true;
+            for (const id of requiredPersonalInfo) {
+                if (!document.getElementById(id).value) {
+                    allPersonalInfoFilled = false;
+                    document.getElementById(id).focus(); // Focus on the first empty field
+                    alert("กรุณากรอกข้อมูลส่วนตัวให้ครบถ้วนก่อนตรวจสอบผล PHQ-9");
+                    return;
+                }
             }
-        }
-      } else { // If 8Q not active, set all 8Q fields to 'N/A'
-          for (let i = 1; i <= 8; i++) {
-              data[`q8Q${i}`] = 'N/A';
-          }
-      }
 
-      data.phq9Score = phq9Score;
-      data.phq9Level = phq9Result.level;
-      data.q8QScore = is8QActive ? q8Score : 'N/A';
-      data.q8QLevel = is8QActive ? q8QResult.level : 'N/A';
+            // Validate consent checkbox
+            if (!document.getElementById("consentCheckbox").checked) {
+                alert("กรุณาให้ความยินยอมก่อนตรวจสอบผล PHQ-9");
+                return;
+            }
+
+            // Calculate PHQ-9 score
+            let phq9Score = 0;
+            let allPHQ9Answered = true;
+            for (let i = 0; i < phq9Questions.length; i++) {
+                const selected = document.querySelector(`input[name=qPHQ9_${i}]:checked`);
+                if (selected) {
+                    phq9Score += parseInt(selected.value);
+                } else {
+                    allPHQ9Answered = false;
+                    // Find the question and scroll to it
+                    const questionElement = document.querySelector(`.question:nth-child(${i + 1})`);
+                    if (questionElement) {
+                        questionElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    alert("กรุณาตอบคำถาม PHQ-9 ให้ครบทุกข้อก่อนตรวจสอบผล");
+                    return;
+                }
+            }
+
+            if (!allPHQ9Answered) {
+                return;
+            }
+
+            const phq9Result = interpretPHQ9(phq9Score);
+            const phq9OnlyResultBox = document.getElementById("phq9OnlyResult");
+            phq9OnlyResultBox.className = `result ${phq9Result.class}`;
+            phq9OnlyResultBox.innerHTML = `<h3>คะแนนรวม PHQ-9: ${phq9Score} (${phq9Result.level})</h3><p><strong>สรุปผล PHQ-9:</strong></p><p>${phq9Result.advice}</p>`;
+            phq9OnlyResultBox.style.display = "block";
+
+            // If PHQ-9 Q9 is > 0, show 8Q section
+            const qPHQ9_8_value = parseInt(document.querySelector('input[name="qPHQ9_8"]:checked').value);
+            const q8QContainer = document.getElementById("questions8Q");
+            const additional8Q = document.getElementById("additional8Q");
+            const submitButton = document.getElementById("submitButton");
+
+            if (qPHQ9_8_value > 0) {
+                q8QContainer.style.display = "block";
+                additional8Q.style.display = "block";
+                submitButton.style.display = "block"; // Show submit button
+                // Make all 8Q radio buttons required
+                document.querySelectorAll('#questions8Q input[type="radio"]').forEach(radio8Q => {
+                    radio8Q.setAttribute('required', 'required');
+                });
+                // For q8Q6 (checkbox), ensure at least one is checked if 8Q is active
+                const q8Q6Checkboxes = document.querySelectorAll('input[name="q8Q6_checkbox"]');
+                q8Q6Checkboxes.forEach(cb => cb.removeAttribute('required')); // Remove required for individual checkboxes
+                const form = document.getElementById('phqForm');
+                form.setAttribute('onsubmit', 'return validate8Q6()'); // Add general form validation for 8Q6
+                
+                // Scroll to 8Q section
+                q8QContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            } else {
+                q8QContainer.style.display = "none";
+                additional8Q.style.display = "none";
+                submitButton.style.display = "block"; // Still show submit button for final submission
+                // Remove required from all 8Q radio buttons
+                document.querySelectorAll('#questions8Q input[type="radio"]').forEach(radio8Q => {
+                    radio8Q.removeAttribute('required');
+                    radio8Q.checked = false; // Uncheck them
+                });
+                // Remove required for q8Q6 and uncheck them
+                document.querySelectorAll('input[name="q8Q6_checkbox"]').forEach(cb => {
+                    cb.removeAttribute('required');
+                    cb.checked = false;
+                });
+                const form = document.getElementById('phqForm');
+                form.removeAttribute('onsubmit'); // Remove validation for 8Q6
+            }
+            
+            // Scroll to the PHQ-9 result for user to see
+            phq9OnlyResultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        // Main form submission (now only for sending data to Google Sheet)
+        document.getElementById("phqForm").addEventListener("submit", async function(e) {
+            e.preventDefault(); // Prevent default form submission
+
+            // Re-calculate PHQ-9 score (in case user changed it after checking)
+            let phq9Score = 0;
+            for (let i = 0; i < phq9Questions.length; i++) {
+                const selected = document.querySelector(`input[name=qPHQ9_${i}]:checked`);
+                if (selected) phq9Score += parseInt(selected.value);
+            }
+
+            let q8Score = 0;
+            const q8QContainer = document.getElementById("questions8Q");
+            let is8QActive = q8QContainer.style.display === "block";
+
+            if (is8QActive) {
+                // Validate 8Q6 checkbox if 8Q is active
+                if (!validate8Q6()) {
+                    return; // Stop submission if validation fails
+                }
+                // Calculate 8Q score
+                for (let i = 0; i < Q8Questions.length; i++) {
+                    if (i === 5) { // For Q6 (checkboxes)
+                        const selectedCheckboxes = document.querySelectorAll(`input[name="q8Q6_checkbox"]:checked`);
+                        if (Array.from(selectedCheckboxes).some(cb => cb.value === "0")) {
+                            q8Score += 0;
+                        } else if (selectedCheckboxes.length > 0) {
+                            q8Score += 1;
+                        }
+                    } else {
+                        const selected = document.querySelector(`input[name=q8Q${i + 1}]:checked`);
+                        if (selected) q8Score += parseInt(selected.value);
+                    }
+                }
+            }
+
+            const phq9Result = interpretPHQ9(phq9Score);
+            let finalAdvice = phq9Result.advice;
+            let finalClass = phq9Result.class;
+            let showBookingLink = phq9Result.link;
+            let q8QResult = null;
+
+            if (is8QActive) {
+                q8QResult = interpret8Q(q8Score);
+                if (q8QResult.level !== "ไม่มีความเสี่ยงต่อการฆ่าตัวตาย") {
+                    finalAdvice = q8QResult.advice;
+                    finalClass = q8QResult.class;
+                    showBookingLink = q8QResult.link;
+                } else {
+                    if (phq9Result.level === "ภาวะซึมเศร้าปานกลาง" || phq9Result.level === "ภาวะซึมเศร้าค่อนข้างรุนแรง" || phq9Result.level === "ภาวะซึมเศร้ารุนแรง") {
+                       finalAdvice = phq9Result.advice;
+                       finalClass = phq9Result.class;
+                       showBookingLink = phq9Result.link;
+                    }
+                }
+            }
+
+            const finalResultBox = document.getElementById("finalResult");
+            finalResultBox.className = `result ${finalClass}`;
+            let resultHTML = `<h3>คะแนนรวม PHQ-9: ${phq9Score} (${phq9Result.level})</h3>`;
+            if (is8QActive) {
+                resultHTML += `<h3>คะแนนรวม 8Q: ${q8Score} (${q8QResult.level})</h3>`;
+            }
+            resultHTML += `<p><strong>สรุปผล:</strong></p><p>${finalAdvice}</p>`;
+
+            if (showBookingLink) {
+              resultHTML += `<a class='booking-button' href='https://outlook.office365.com/owa/calendar/GrowthMindCenter@kmitl.ac.th/bookings/' target='_blank'>จองพบนักจิตวิทยา</a>`;
+            }
+            finalResultBox.innerHTML = resultHTML;
+            finalResultBox.style.display = "block";
+            
+            // Scroll to the final result
+            finalResultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
 
-      // Ensure all named fields from the form are included, even if empty
-      // This is generally handled by Object.fromEntries(formData.entries()) for direct inputs/selects,
-      // but explicit assignment is good for calculated scores or specific questions like q8Q6.
+            // Prepare data for Google Sheet
+            const formData = new FormData(document.getElementById("phqForm"));
+            const data = Object.fromEntries(formData.entries());
 
-      // IMPORTANT: Replace this URL with YOUR Google Apps Script Web App URL
-      fetch("https://script.google.com/macros/s/AKfycbz1VU-3eOFmwQFN0SkFGeKvzogudsVNRXI9g3KUqDm2cxEtDN3e_kuxb8w1j2BoBnVjAg/exec", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      }).then(response => response.json())
-        .then(result => {
-            console.log('Success:', result);
-            alert("บันทึกข้อมูลเรียบร้อยแล้ว ขอบคุณที่ให้ความร่วมมือ!");
-            // Optionally, clear the form or redirect
-            document.getElementById("phqForm").reset(); // Reset the form
-            document.getElementById("result").style.display = "none"; // Hide result box
-            document.getElementById("questions8Q").style.display = "none"; // Hide 8Q section
-        })        
-        .catch(error => {
-            console.error('Error:', error);
-            alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล กรุณาลองใหม่อีกครั้ง");
+            // Add PHQ-9 individual question values
+            for (let i = 0; i < phq9Questions.length; i++) {
+                const selected = document.querySelector(`input[name=qPHQ9_${i}]:checked`);
+                data[`qPHQ9_${i}`] = selected ? selected.value : '';
+            }
+
+            // Add 8Q individual question values (if active)
+            if (is8QActive) {
+                for (let i = 1; i <= 8; i++) {
+                    if (i === 6) { // Special handling for 8Q6 checkbox
+                        const selectedCheckboxes = Array.from(document.querySelectorAll('input[name="q8Q6_checkbox"]:checked'))
+                                                     .map(cb => Q8Choices[5][parseInt(cb.value)]);
+                        data[`q8Q${i}`] = selectedCheckboxes.join(', '); // Store as comma-separated string of chosen labels
+                    } else {
+                        const selected = document.querySelector(`input[name=q8Q${i}]:checked`);
+                        data[`q8Q${i}`] = selected ? selected.value : '';
+                    }
+                }
+            } else { // If 8Q not active, set all 8Q fields to 'N/A'
+                for (let i = 1; i <= 8; i++) {
+                    data[`q8Q${i}`] = 'N/A';
+                }
+            }
+
+            data.phq9Score = phq9Score;
+            data.phq9Level = phq9Result.level;
+            data.q8QScore = is8QActive ? q8Score : 'N/A';
+            data.q8QLevel = is8QActive ? q8QResult.level : 'N/A';
+
+            // IMPORTANT: Replace this URL with YOUR Google Apps Script Web App URL
+            fetch("https://script.google.com/macros/s/AKfycbz1VU-3eOFmwQFN0SkFGeKvzogudsVNRXI9g3KUqDm2cxEtDN3e_kuxb8w1j2BoBnVjAg/exec", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            }).then(response => response.json())
+                .then(result => {
+                    console.log('Success:', result);
+                    alert("บันทึกข้อมูลเรียบร้อยแล้ว ขอบคุณที่ให้ความร่วมมือ!");
+                    // Optionally, clear the form or redirect
+                    document.getElementById("phqForm").reset(); // Reset the form
+                    document.getElementById("phq9OnlyResult").style.display = "none"; // Hide PHQ-9 result box
+                    document.getElementById("finalResult").style.display = "none"; // Hide final result box
+                    document.getElementById("questions8Q").style.display = "none"; // Hide 8Q section
+                    document.getElementById("submitButton").style.display = "none"; // Hide submit button again
+                })        
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล กรุณาลองใหม่อีกครั้ง");
+                });
         });
     });
   </script>
