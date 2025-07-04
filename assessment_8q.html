@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>แบบประเมินการฆ่าตัวตาย 8Q</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background: linear-gradient(to right, #e1f5fe, #fce4ec);
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      text-align: center;
+      color: #00695c;
+    }
+    .intro {
+      background-color: #fff3e0;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+      font-size: 16px;
+    }
+    .question {
+      background-color: #e1f5fe;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+    .question:nth-child(even) {
+      background-color: #fce4ec;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input[type="radio"] {
+      margin-right: 5px;
+    }
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #00796b;
+      color: white;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 18px;
+      text-align: center;
+      display: none;
+    }
+    .none { background-color: #c8e6c9; color: #256029; }
+    .low { background-color: #fff9c4; color: #7f6000; }
+    .moderate { background-color: #ffe082; color: #6d4c41; }
+    .high { background-color: #ef9a9a; color: #b71c1c; }
+    .booking-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #d81b60;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>แบบประเมินการฆ่าตัวตาย 8Q</h1>
+    <div class="intro">
+      การทดสอบนี้ใช้เพื่อการคัดกรองและติดตามความรุนแรงของอาการ และไม่สามารถใช้แทนการวินิจฉัยทางคลินิกได้ กรุณาตอบโดยอิงจากประสบการณ์ในช่วง 2 สัปดาห์ที่ผ่านมา
+    </div>
+
+    <form id="q8Form">
+      <div class="question"><strong>1. คิดอยากตาย หรือ คิดว่าตายไปจะดีกว่า</strong>
+        <label><input type="radio" name="q1" value="0" required> ไม่มี</label>
+        <label><input type="radio" name="q1" value="1"> มี</label>
+      </div>
+      <div class="question"><strong>2. อยากทำร้ายตัวเอง หรือทำให้ตัวเองบาดเจ็บ</strong>
+        <label><input type="radio" name="q2" value="0" required> ไม่มี</label>
+        <label><input type="radio" name="q2" value="2"> มี</label>
+      </div>
+      <div class="question"><strong>3. คิดเกี่ยวกับการฆ่าตัวตาย</strong>
+        <label><input type="radio" name="q3" value="0" required> ไม่มี</label>
+        <label><input type="radio" name="q3" value="6"> มี</label>
+      </div>
+      <div class="question"><strong>3.1 สามารถควบคุมความอยากฆ่าตัวตายได้หรือไม่</strong>
+        <label><input type="radio" name="q31" value="0" required> ได้</label>
+        <label><input type="radio" name="q31" value="8"> ไม่ได้</label>
+      </div>
+      <div class="question"><strong>4. มีแผนการที่จะฆ่าตัวตาย</strong>
+        <label><input type="radio" name="q4" value="0" required> ไม่มี</label>
+        <label><input type="radio" name="q4" value="8"> มี</label>
+      </div>
+      <div class="question"><strong>5. ได้เตรียมการเพื่อฆ่าตัวตายจริง</strong>
+        <label><input type="radio" name="q5" value="0" required> ไม่มี</label>
+        <label><input type="radio" name="q5" value="9"> มี</label>
+      </div>
+      <div class="question"><strong>6. ได้ทำให้ตัวเองบาดเจ็บโดยไม่ตั้งใจให้ถึงแก่ชีวิต</strong>
+        <label><input type="radio" name="q6" value="0" required> ไม่มี</label>
+        <label><input type="radio" name="q6" value="4"> มี</label>
+      </div>
+      <div class="question"><strong>7. ได้พยายามฆ่าตัวตายโดยคาดหวัง/ตั้งใจให้ตาย</strong>
+        <label><input type="radio" name="q7" value="0" required> ไม่มี</label>
+        <label><input type="radio" name="q7" value="10"> มี</label>
+      </div>
+      <div class="question"><strong>8. ตลอดชีวิตที่ผ่านมา ท่านเคยพยายามฆ่าตัวตาย</strong>
+        <label><input type="radio" name="q8" value="0" required> ไม่มี</label>
+        <label><input type="radio" name="q8" value="4"> มี</label>
+      </div>
+      <button type="submit">ส่งแบบประเมิน</button>
+    </form>
+
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    document.getElementById('q8Form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      let score = 0;
+      for (let i = 1; i <= 8; i++) {
+        score += parseInt(document.querySelector(`input[name='q${i}']:checked`).value);
+      }
+      score += parseInt(document.querySelector(`input[name='q31']:checked`).value);
+
+      const resultBox = document.getElementById('result');
+      resultBox.style.display = 'block';
+
+      let level, css, advice;
+      if (score === 0) {
+        level = 'ไม่มีแนวโน้มฆ่าตัวตายในปัจจุบัน';
+        css = 'none';
+        advice = 'ควรรักษาสุขภาพใจอย่างต่อเนื่อง เช่น พักผ่อนให้เพียงพอ พบปะเพื่อนฝูง และทำกิจกรรมที่ผ่อนคลาย';
+      } else if (score <= 8) {
+        level = 'มีแนวโน้มที่จะฆ่าตัวตายในปัจจุบัน ระดับน้อย';
+        css = 'low';
+        advice = 'ควรเฝ้าระวังอารมณ์ พูดคุยกับคนที่ไว้ใจ หรือเข้าร่วมกิจกรรมที่ส่งเสริมสุขภาพจิต';
+      } else if (score <= 16) {
+        level = 'มีแนวโน้มที่จะฆ่าตัวตายในปัจจุบัน ระดับปานกลาง';
+        css = 'moderate';
+        advice = 'ควรเข้ารับการดูแลจากนักจิตวิทยาหรือผู้เชี่ยวชาญด้านสุขภาพจิต';
+      } else {
+        level = 'มีแนวโน้มที่จะฆ่าตัวตายในปัจจุบัน ระดับรุนแรง';
+        css = 'high';
+        advice = 'ควรรีบพบจิตแพทย์หรือนักจิตวิทยาทันที เพื่อความปลอดภัยและการช่วยเหลือที่เหมาะสม';
+      }
+
+      resultBox.className = `result ${css}`;
+      resultBox.innerHTML = `
+        <h2>คะแนนรวม: ${score}</h2>
+        <p><strong>${level}</strong></p>
+        <p>${advice}</p>
+      `;
+
+      if (score >= 1) {
+        resultBox.innerHTML += `
+          <a class="booking-button" href="https://outlook.office365.com/owa/calendar/GrowthMindCenter@kmitl.ac.th/bookings/" target="_blank">
+            จองพบนักจิตวิทยา
+          </a>`;
+      }
+    });
+  </script>
+</body>
+</html>
