@@ -99,7 +99,7 @@
       ท่านเคยใช้บริการกับนักจิตวิทยาที่โรงพยาบาลพระจอมเกล้าเจ้าคุณทหารหรือไม่
     </div>
 
-    <a class="btn" href="https://growthmindkmch.github.io/Kmitl/" target="_blank">ผู้รับบริการใหม่ (New case)</a>
+    <a class="btn" href="phq9.html">ผู้รับบริการใหม่ (New case)</a>
     <a class="btn" href="https://outlook.office365.com/owa/calendar/GrowthMindCenter@kmitl.ac.th/bookings/" target="_blank">ติดตามอาการเคสเก่า (Follow up)</a>
 
     <div class="note">
