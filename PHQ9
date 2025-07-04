@@ -107,7 +107,7 @@
       <label>อายุ</label><input type="number" name="age" required>
       <label>รหัสนักศึกษา</label><input type="text" name="studentId">
       <label>เบอร์ติดต่อ</label><input type="tel" name="phone">
-      <label>อีเมล</label><input type="email" name="email" placeholder="example@email.com" required>
+      <label>อีเมล</label><input type="email" name="email" placeholder="example@kmitl.ac.th" required>
       <label>สถานะ</label>
       <select name="role" required>
         <option value="">-- เลือกสถานะ --</option>
