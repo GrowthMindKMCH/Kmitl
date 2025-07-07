@@ -212,7 +212,7 @@
       box.style.display = "block";
 
      // ส่งข้อมูลไป Google Apps Script
-    const formData = new FormData(document.getElementById("phqForm"));  // แก้ id ตรงนี้
+    const formData = new FormData(document.getElementById("phqForm")); 
     const data = Object.fromEntries(formData.entries());
     data.score = score;
     data.level = result.level;
@@ -220,15 +220,17 @@
     for (let i = 0; i < 9; i++) {
       const selected = document.querySelector(`input[name=q${i}]:checked`);
       data[`q${i}`] = selected ? selected.value : "";
-    }
-
+      }
     fetch("https://script.google.com/macros/s/AKfycbz31c5XNRYG-C2rHjUWr381Ak2xYne6BbyNWBhxlSrqBvcDI_JHH1MQGuvIPgeXpCIVSQ/exec", {
       method: "POST",
       headers: {
       "Content-Type": "application/json"
-    },
+      },
       body: JSON.stringify(data)
-      }).catch(e => console.error(e));
+      })
+    .then(res => res.json())
+    .then(result => console.log("✅ ตอบกลับจาก GAS:", result))
+    .catch(error => console.error("❌ ส่งข้อมูลไม่สำเร็จ:", error));
     });
 
     renderQuestions();
