@@ -212,7 +212,7 @@
       box.style.display = "block";
 
       // ส่งข้อมูลไป Google Apps Script (ถ้าต้องการ)
-      const formData = new FormData(document.getElementById("phqForm"));
+      const formData = new FormData(document.getElementById("PHQ9"));
       const data = Object.fromEntries(formData.entries());
       data.score = score;
       data.level = result.level;
