@@ -222,22 +222,32 @@
         dataToSubmit[`q${i}`] = selected ? selected.value : "";
       }
 
-      // *** เปลี่ยน YOUR_WEB_APP_URL_HERE เป็น Web App URL ที่คุณได้จาก Google Apps Script ***
+      // *** วาง Web App URL ที่คุณได้จาก Google Apps Script ที่นี่ ***
+      // URL นี้ต้องเป็น URL ที่ได้จากการ Deploy Apps Script ล่าสุด
       const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzmMngaFFL0C2YlYxvEKRF9DPb30e0sM21z-nDknRg3sH3X7GaEJrfBOCb9KP_ceVyG/exec";
 
       fetch(GOOGLE_APPS_SCRIPT_URL, {
         method: "POST",
-        // เมื่อส่งเป็น JSON ให้เอา 'mode: "no-cors"' ออก
+        // ไม่ต้องใช้ mode: "no-cors" เมื่อส่งเป็น JSON และต้องการอ่าน Response
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(dataToSubmit) // ส่ง 'dataToSubmit' แทน 'data'
+        body: JSON.stringify(dataToSubmit) // ส่ง 'dataToSubmit' ที่มีข้อมูลครบถ้วน
       })
       .then(res => {
-          // ถ้าใช้ mode: 'no-cors' จะไม่สามารถอ่าน res.json() ได้
-          // ดังนั้น ให้ใช้ console.log ธรรมดาแทน หรือปรับปรุง Apps Script ให้ส่ง JSON กลับมา
-          console.log("✅ ส่งข้อมูลสำเร็จ");
+          // ตรวจสอบว่า Response กลับมาสำเร็จหรือไม่
+          if (res.ok) { // res.ok คือ true ถ้าสถานะเป็น 2xx (เช่น 200 OK)
+              return res.json(); // พยายามอ่าน Response เป็น JSON
+          } else {
+              throw new Error('Network response was not ok.');
+          }
+      })
+      .then(result => {
+          console.log("✅ ส่งข้อมูลสำเร็จ:", result);
           alert("ส่งข้อมูลสำเร็จแล้ว!"); // แจ้งผู้ใช้งาน
+          // ถ้าต้องการรีเซ็ตฟอร์มหลังจากส่งสำเร็จ
+          document.getElementById("phqForm").reset();
+          document.getElementById("result").style.display = "none"; // ซ่อนผลลัพธ์
       })
       .catch(error => {
           console.error("❌ ส่งข้อมูลไม่สำเร็จ:", error);
