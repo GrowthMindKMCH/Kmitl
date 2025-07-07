@@ -168,7 +168,7 @@
 
     function renderQuestions() {
       const container = document.getElementById("questions");
-      container.innerHTML = ""; // เคลียร์ก่อน
+      container.innerHTML = ""; // Clear before rendering
       questions.forEach((q, i) => {
         let qHTML = `<div class="question"><label>${i + 1}. ${q}</label><br>`;
         choices.forEach((c, j) => {
@@ -197,11 +197,11 @@
       const suicidal = parseInt(document.querySelector("input[name='q8']:checked").value);
       if (score >= 9 || suicidal > 0) {
         alert("คุณมีแนวโน้มที่จะมีภาวะซึมเศร้า หรือความคิดฆ่าตัวตาย กรุณาทำแบบประเมิน 8Q ต่อเพื่อประเมินความเสี่ยงเพิ่มเติม");
-        window.location.href = "assessment_8q.html"; // เปลี่ยนตาม path ของคุณ
+        window.location.href = "assessment_8q.html"; // Change according to your path
         return;
       }
 
-      // ถ้าไม่เข้าเงื่อนไข ให้แสดงผลตามปกติ
+      // If conditions are not met, display results normally
       const result = interpret(score);
       const box = document.getElementById("result");
       box.className = `result ${result.class}`;
@@ -211,9 +211,14 @@
       }
       box.style.display = "block";
 
-      // ส่งข้อมูลไป Google Apps Script
+      // Prepare data for Google Apps Script
       const formData = new FormData(document.getElementById("phqForm"));
-      const dataToSubmit = Object.fromEntries(formData.entries());
+      const dataToSubmit = {};
+      
+      // Convert FormData to a plain object for URLSearchParams
+      for (let [key, value] of formData.entries()) {
+          dataToSubmit[key] = value;
+      }
       dataToSubmit.score = score;
       dataToSubmit.level = result.level;
 
@@ -222,41 +227,38 @@
         dataToSubmit[`q${i}`] = selected ? selected.value : "";
       }
 
-      // *** วาง Web App URL ที่คุณได้จาก Google Apps Script ที่นี่ ***
-      // URL นี้ต้องเป็น URL ที่ได้จากการ Deploy Apps Script ล่าสุด
-      const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzmMngaFFL0C2YlYxvEKRF9DPb30e0sM21z-nDknRg3sH3X7GaEJrfBOCb9KP_ceVyG/exec";
+      // *** IMPORTANT: Replace with your actual Web App URL from Google Apps Script ***
+      // This URL must be from the latest deployment of your Apps Script
+      const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwZD8sfVnN5XAyfsLoMPV3ar-Bs1mAoWmbCvq-N0DBtCuyMzazMHTRIHBQvvY4XsVLE/exec"; // Your URL here
 
       fetch(GOOGLE_APPS_SCRIPT_URL, {
         method: "POST",
-        // ไม่ต้องใช้ mode: "no-cors" เมื่อส่งเป็น JSON และต้องการอ่าน Response
+        mode: "no-cors", // Use 'no-cors' to bypass CORS preflight issues
         headers: {
-          "Content-Type": "application/json"
+          // Use 'application/x-www-form-urlencoded' when sending data via URLSearchParams
+          "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: JSON.stringify(dataToSubmit) // ส่ง 'dataToSubmit' ที่มีข้อมูลครบถ้วน
+        // Convert the data object to URL-encoded format
+        body: new URLSearchParams(dataToSubmit).toString(), 
       })
-      .then(res => {
-          // ตรวจสอบว่า Response กลับมาสำเร็จหรือไม่
-          if (res.ok) { // res.ok คือ true ถ้าสถานะเป็น 2xx (เช่น 200 OK)
-              return res.json(); // พยายามอ่าน Response เป็น JSON
-          } else {
-              throw new Error('Network response was not ok.');
-          }
-      })
-      .then(result => {
-          console.log("✅ ส่งข้อมูลสำเร็จ:", result);
-          alert("ส่งข้อมูลสำเร็จแล้ว!"); // แจ้งผู้ใช้งาน
-          // ถ้าต้องการรีเซ็ตฟอร์มหลังจากส่งสำเร็จ
+      .then(() => {
+          // In 'no-cors' mode, you cannot read the response body or check res.ok
+          // We assume success if no network error occurs.
+          console.log("✅ Data sent to Google Sheet (no-cors mode).");
+          alert("ส่งข้อมูลสำเร็จแล้ว!"); // Inform the user
+          // Optionally reset the form after successful submission
           document.getElementById("phqForm").reset();
-          document.getElementById("result").style.display = "none"; // ซ่อนผลลัพธ์
+          document.getElementById("result").style.display = "none"; // Hide results
       })
       .catch(error => {
-          console.error("❌ ส่งข้อมูลไม่สำเร็จ:", error);
-          alert("เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่!"); // แจ้งผู้ใช้งานเมื่อเกิดข้อผิดพลาด
+          // This catch block will only trigger for network errors (e.g., URL unreachable)
+          console.error("❌ Failed to send data:", error);
+          alert("เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่!"); // Inform the user about the error
       });
 
     });
 
-    // เรียกใช้ฟังก์ชันนี้เพื่อให้คำถามแสดงขึ้นมาตั้งแต่โหลดหน้า
+    // Call this function to render questions when the page loads
     renderQuestions();
   </script>
 </body>
