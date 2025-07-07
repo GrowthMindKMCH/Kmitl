@@ -196,9 +196,9 @@
       }
       const suicidal = parseInt(document.querySelector("input[name='q8']:checked").value);
       if (score >= 9 || suicidal > 0) {
-      alert("คุณมีแนวโน้มที่จะมีภาวะซึมเศร้า หรือความคิดฆ่าตัวตาย กรุณาทำแบบประเมิน 8Q ต่อเพื่อประเมินความเสี่ยงเพิ่มเติม");
-      window.location.href = "assessment_8q.html"; // เปลี่ยนตาม path ของคุณ
-      return;
+        alert("คุณมีแนวโน้มที่จะมีภาวะซึมเศร้า หรือความคิดฆ่าตัวตาย กรุณาทำแบบประเมิน 8Q ต่อเพื่อประเมินความเสี่ยงเพิ่มเติม");
+        window.location.href = "assessment_8q.html"; // เปลี่ยนตาม path ของคุณ
+        return;
       }
 
       // ถ้าไม่เข้าเงื่อนไข ให้แสดงผลตามปกติ
@@ -211,32 +211,43 @@
       }
       box.style.display = "block";
 
-     // ส่งข้อมูลไป Google Apps Script
-    const formData = new FormData(document.getElementById("phqForm")); 
-    const data = Object.fromEntries(formData.entries());
-    data.score = score;
-    data.level = result.level;
+      // ส่งข้อมูลไป Google Apps Script
+      const formData = new FormData(document.getElementById("phqForm"));
+      const dataToSubmit = Object.fromEntries(formData.entries());
+      dataToSubmit.score = score;
+      dataToSubmit.level = result.level;
 
-    for (let i = 0; i < 9; i++) {
-      const selected = document.querySelector(`input[name=q${i}]:checked`);
-      data[`q${i}`] = selected ? selected.value : "";
+      for (let i = 0; i < 9; i++) {
+        const selected = document.querySelector(`input[name=q${i}]:checked`);
+        dataToSubmit[`q${i}`] = selected ? selected.value : "";
       }
 
-      fetch("https://script.google.com/macros/s/AKfycbwZD8sfVnN5XAyfsLoMPV3ar-Bs1mAoWmbCvq-N0DBtCuyMzazMHTRIHBQvvY4XsVLE/exec", { // 
-      method: "POST",
-      headers: {
-      "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
+      // *** เปลี่ยน YOUR_WEB_APP_URL_HERE เป็น Web App URL ที่คุณได้จาก Google Apps Script ***
+      const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzmMngaFFL0C2YlYxvEKRF9DPb30e0sM21z-nDknRg3sH3X7GaEJrfBOCb9KP_ceVyG/exec";
+
+      fetch(GOOGLE_APPS_SCRIPT_URL, {
+        method: "POST",
+        // เมื่อส่งเป็น JSON ให้เอา 'mode: "no-cors"' ออก
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dataToSubmit) // ส่ง 'dataToSubmit' แทน 'data'
       })
-      .then(res => res.json())
-      .then(result => console.log("✅ ส่งข้อมูลสำเร็จ:", result))
-      .catch(error => console.error("❌ ส่งข้อมูลไม่สำเร็จ:", error));
-      
+      .then(res => {
+          // ถ้าใช้ mode: 'no-cors' จะไม่สามารถอ่าน res.json() ได้
+          // ดังนั้น ให้ใช้ console.log ธรรมดาแทน หรือปรับปรุง Apps Script ให้ส่ง JSON กลับมา
+          console.log("✅ ส่งข้อมูลสำเร็จ");
+          alert("ส่งข้อมูลสำเร็จแล้ว!"); // แจ้งผู้ใช้งาน
+      })
+      .catch(error => {
+          console.error("❌ ส่งข้อมูลไม่สำเร็จ:", error);
+          alert("เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่!"); // แจ้งผู้ใช้งานเมื่อเกิดข้อผิดพลาด
+      });
+
     });
 
+    // เรียกใช้ฟังก์ชันนี้เพื่อให้คำถามแสดงขึ้นมาตั้งแต่โหลดหน้า
     renderQuestions();
   </script>
 </body>
 </html>
-
