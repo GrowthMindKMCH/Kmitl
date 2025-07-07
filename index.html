@@ -217,6 +217,13 @@
       data.score = score;
       data.level = result.level;
 
+      // เพิ่มตรงนี้เพื่อส่งคำตอบ PHQ-9 ทั้ง 9 ข้อ
+      for (let i = 0; i < 9; i++) {
+      const selected = document.querySelector(`input[name=q${i}]:checked`);
+      data[`q${i}`] = selected ? selected.value : "";
+      }
+
+      // ส่งไป Google Apps Script
       fetch("https://script.google.com/macros/s/AKfycbz31c5XNRYG-C2rHjUWr381Ak2xYne6BbyNWBhxlSrqBvcDI_JHH1MQGuvIPgeXpCIVSQ/exec", {
         method: "POST",
         headers: {
