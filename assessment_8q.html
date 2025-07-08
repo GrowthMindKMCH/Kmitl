@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>แบบประเมินการฆ่าตัวตาย 8Q</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Sarabun', sans-serif;
@@ -31,6 +31,18 @@
       margin-bottom: 25px;
       font-size: 16px;
     }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
     .question {
       background-color: #e1f5fe;
       padding: 15px;
@@ -40,19 +52,8 @@
     .question:nth-child(even) {
       background-color: #fce4ec;
     }
-    label {
-      display: block;
-      margin-top: 10px;
-    }
     input[type="radio"] {
       margin-right: 5px;
-    }
-    input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
     }
     button {
       display: block;
@@ -96,48 +97,50 @@
     </div>
 
     <form id="q8Form">
-      <label>ชื่อ</label>
-      <input type="text" name="fname" id="fname" required>
-      <label>นามสกุล</label>
-      <input type="text" name="lname" id="lname" required>
-      <label>รหัสนักศึกษา</label>
-      <input type="text" name="studentId" id="studentId">
+      <label for="fname">ชื่อ</label>
+      <input type="text" name="fname" id="fname" required />
+
+      <label for="lname">นามสกุล</label>
+      <input type="text" name="lname" id="lname" required />
+
+      <label for="studentId">รหัสนักศึกษา</label>
+      <input type="text" name="studentId" id="studentId" />
 
       <div class="question"><strong>1. คิดอยากตาย หรือ คิดว่าตายไปจะดีกว่า</strong>
-        <label><input type="radio" name="q1" value="0" required> ไม่มี</label>
-        <label><input type="radio" name="q1" value="1"> มี</label>
+        <label><input type="radio" name="q1" value="0" required /> ไม่มี</label>
+        <label><input type="radio" name="q1" value="1" /> มี</label>
       </div>
       <div class="question"><strong>2. อยากทำร้ายตัวเอง หรือทำให้ตัวเองบาดเจ็บ</strong>
-        <label><input type="radio" name="q2" value="0" required> ไม่มี</label>
-        <label><input type="radio" name="q2" value="2"> มี</label>
+        <label><input type="radio" name="q2" value="0" required /> ไม่มี</label>
+        <label><input type="radio" name="q2" value="2" /> มี</label>
       </div>
       <div class="question"><strong>3. คิดเกี่ยวกับการฆ่าตัวตาย</strong>
-        <label><input type="radio" name="q3" value="0" required> ไม่มี</label>
-        <label><input type="radio" name="q3" value="6"> มี</label>
+        <label><input type="radio" name="q3" value="0" required /> ไม่มี</label>
+        <label><input type="radio" name="q3" value="6" /> มี</label>
       </div>
       <div class="question"><strong>3.1 สามารถควบคุมความอยากฆ่าตัวตายได้หรือไม่</strong>
-        <label><input type="radio" name="q31" value="0" required> ได้</label>
-        <label><input type="radio" name="q31" value="8"> ไม่ได้</label>
+        <label><input type="radio" name="q31" value="0" required /> ได้</label>
+        <label><input type="radio" name="q31" value="8" /> ไม่ได้</label>
       </div>
       <div class="question"><strong>4. มีแผนการที่จะฆ่าตัวตาย</strong>
-        <label><input type="radio" name="q4" value="0" required> ไม่มี</label>
-        <label><input type="radio" name="q4" value="8"> มี</label>
+        <label><input type="radio" name="q4" value="0" required /> ไม่มี</label>
+        <label><input type="radio" name="q4" value="8" /> มี</label>
       </div>
       <div class="question"><strong>5. ได้เตรียมการเพื่อฆ่าตัวตายจริง</strong>
-        <label><input type="radio" name="q5" value="0" required> ไม่มี</label>
-        <label><input type="radio" name="q5" value="9"> มี</label>
+        <label><input type="radio" name="q5" value="0" required /> ไม่มี</label>
+        <label><input type="radio" name="q5" value="9" /> มี</label>
       </div>
       <div class="question"><strong>6. ได้ทำให้ตัวเองบาดเจ็บโดยไม่ตั้งใจให้ถึงแก่ชีวิต</strong>
-        <label><input type="radio" name="q6" value="0" required> ไม่มี</label>
-        <label><input type="radio" name="q6" value="4"> มี</label>
+        <label><input type="radio" name="q6" value="0" required /> ไม่มี</label>
+        <label><input type="radio" name="q6" value="4" /> มี</label>
       </div>
       <div class="question"><strong>7. ได้พยายามฆ่าตัวตายโดยคาดหวัง/ตั้งใจให้ตาย</strong>
-        <label><input type="radio" name="q7" value="0" required> ไม่มี</label>
-        <label><input type="radio" name="q7" value="10"> มี</label>
+        <label><input type="radio" name="q7" value="0" required /> ไม่มี</label>
+        <label><input type="radio" name="q7" value="10" /> มี</label>
       </div>
       <div class="question"><strong>8. ตลอดชีวิตที่ผ่านมา ท่านเคยพยายามฆ่าตัวตาย</strong>
-        <label><input type="radio" name="q8" value="0" required> ไม่มี</label>
-        <label><input type="radio" name="q8" value="4"> มี</label>
+        <label><input type="radio" name="q8" value="0" required /> ไม่มี</label>
+        <label><input type="radio" name="q8" value="4" /> มี</label>
       </div>
       <button type="submit">ส่งแบบประเมิน</button>
     </form>
@@ -146,7 +149,7 @@
   </div>
 
   <script>
-    // ดึงค่าจาก URL เช่น assessment_8q.html?fname=สมหญิง&lname=ใจดี&studentId=12345
+    // รับค่าชื่อ นามสกุล รหัสนักศึกษาจาก URL (ถ้ามี)
     const params = new URLSearchParams(window.location.search);
     document.getElementById("fname").value = params.get("fname") || "";
     document.getElementById("lname").value = params.get("lname") || "";
@@ -154,61 +157,78 @@
 
     document.getElementById('q8Form').addEventListener('submit', function(e) {
       e.preventDefault();
+
       let score = 0;
       for (let i = 1; i <= 8; i++) {
-        score += parseInt(document.querySelector(`input[name='q${i}']:checked`).value);
+        const val = parseInt(document.querySelector(`input[name='q${i}']:checked`).value);
+        score += val;
       }
       score += parseInt(document.querySelector(`input[name='q31']:checked`).value);
 
-      let level, css, advice;
+      // แปลผล
+      let level = "";
+      let cssClass = "";
+      let advice = "";
+
       if (score === 0) {
-        level = 'ไม่มีแนวโน้มฆ่าตัวตายในปัจจุบัน';
-        css = 'none';
-        advice = 'ควรรักษาสุขภาพใจอย่างต่อเนื่อง เช่น พักผ่อนให้เพียงพอ พบปะเพื่อนฝูง และทำกิจกรรมที่ผ่อนคลาย';
+        level = "ไม่มีแนวโน้มฆ่าตัวตายในปัจจุบัน";
+        cssClass = "none";
+        advice = "ควรรักษาสุขภาพใจอย่างต่อเนื่อง เช่น พักผ่อนให้เพียงพอ พบปะเพื่อนฝูง และทำกิจกรรมที่ผ่อนคลาย";
       } else if (score <= 8) {
-        level = 'แนวโน้มฆ่าตัวตายระดับน้อย';
-        css = 'low';
-        advice = 'ควรเฝ้าระวังอารมณ์ และพูดคุยกับคนที่ไว้ใจ';
+        level = "มีแนวโน้มที่จะฆ่าตัวตายในปัจจุบัน ระดับน้อย";
+        cssClass = "low";
+        advice = "ควรเฝ้าระวังอารมณ์ พูดคุยกับคนที่ไว้ใจ หรือเข้าร่วมกิจกรรมที่ส่งเสริมสุขภาพจิต";
       } else if (score <= 16) {
-        level = 'แนวโน้มฆ่าตัวตายระดับปานกลาง';
-        css = 'moderate';
-        advice = 'ควรปรึกษาผู้เชี่ยวชาญด้านสุขภาพจิต';
+        level = "มีแนวโน้มที่จะฆ่าตัวตายในปัจจุบัน ระดับปานกลาง";
+        cssClass = "moderate";
+        advice = "ควรเข้ารับการดูแลจากนักจิตวิทยาหรือผู้เชี่ยวชาญด้านสุขภาพจิต";
       } else {
-        level = 'แนวโน้มฆ่าตัวตายระดับรุนแรง';
-        css = 'high';
-        advice = 'ควรรีบพบจิตแพทย์ทันที';
+        level = "มีแนวโน้มที่จะฆ่าตัวตายในปัจจุบัน ระดับรุนแรง";
+        cssClass = "high";
+        advice = "ควรรีบพบจิตแพทย์หรือนักจิตวิทยาทันที เพื่อความปลอดภัยและการช่วยเหลือที่เหมาะสม";
       }
 
       const resultBox = document.getElementById('result');
-      resultBox.className = `result ${css}`;
-      resultBox.innerHTML = `<h2>คะแนนรวม: ${score}</h2><p><strong>${level}</strong></p><p>${advice}</p>`;
-      resultBox.style.display = 'block';
+      resultBox.className = `result ${cssClass}`;
+      resultBox.innerHTML = `
+        <h2>คะแนนรวม: ${score}</h2>
+        <p><strong>${level}</strong></p>
+        <p>${advice}</p>
+      `;
+      resultBox.style.display = "block";
 
+      // ถ้ามีความเสี่ยง (score >= 1) แสดงปุ่มจองพบนักจิตวิทยา
       if (score >= 1) {
-        resultBox.innerHTML += `<a class="booking-button" href="https://outlook.office365.com/owa/calendar/GrowthMindCenter@kmitl.ac.th/bookings/" target="_blank">จองพบนักจิตวิทยา</a>`;
+        resultBox.innerHTML += `
+          <a class="booking-button" href="https://outlook.office365.com/owa/calendar/GrowthMindCenter@kmitl.ac.th/bookings/" target="_blank">
+            จองพบนักจิตวิทยา
+          </a>
+        `;
       }
 
-      // เตรียมส่งข้อมูลไป Google Sheets
-      const formData = new FormData(document.getElementById("q8Form"));
-      const data = {};
+      // เตรียมส่งข้อมูลไป Google Sheets ผ่าน Apps Script
+      const formData = new FormData(document.getElementById('q8Form'));
+      const dataToSend = {};
       for (let [key, value] of formData.entries()) {
-        data[key] = value;
+        dataToSend[key] = value;
       }
-      data.score = score;
-      data.level = level;
+      dataToSend.score = score;
+      dataToSend.level = level;
 
-      // *** เปลี่ยน URL นี้เป็น Google Apps Script ของคุณ ***
+      // เปลี่ยน URL ให้เป็นของคุณเอง
       const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxf2z-LEvutD3zOBUGkrSgXhvSHa00fZuj8kgRLgirY6K6tcT-LCnWJqC5VbmJeTkcAiA/exec";
 
       fetch(GOOGLE_APPS_SCRIPT_URL, {
         method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(data).toString(),
+        mode: "no-cors", // ป้องกัน CORS ปัญหา
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams(dataToSend).toString()
       }).then(() => {
         console.log("ส่งข้อมูล 8Q สำเร็จ");
-      }).catch((err) => {
-        console.error("ส่งข้อมูลไม่สำเร็จ", err);
+      }).catch(err => {
+        console.error("ส่งข้อมูล 8Q ไม่สำเร็จ", err);
       });
     });
   </script>
