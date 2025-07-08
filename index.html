@@ -197,8 +197,8 @@
       const suicidal = parseInt(document.querySelector("input[name='q8']:checked").value);
       if (score >= 9 || suicidal > 0) {
         alert("คุณมีแนวโน้มที่จะมีภาวะซึมเศร้า หรือความคิดฆ่าตัวตาย กรุณาทำแบบประเมิน 8Q ต่อเพื่อประเมินความเสี่ยงเพิ่มเติม");
-        window.location.href = "assessment_8q.html"; // Change according to your path
-        return;
+        window.location.href = `assessment_8q.html?fname=${fname}&lname=${lname}&studentId=${studentId}`;
+       return;
       }
 
       // If conditions are not met, display results normally
