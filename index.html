@@ -170,11 +170,11 @@
       const container = document.getElementById("questions");
       container.innerHTML = ""; // Clear before rendering
       questions.forEach((q, i) => {
-        let qHTML = `<div class="question"><label>${i + 1}. ${q}</label><br>`;
+        let qHTML = <div class="question"><label>${i + 1}. ${q}</label><br>;
         choices.forEach((c, j) => {
-          qHTML += `<label><input type="radio" name="q${i}" value="${j}" required> ${c}</label><br>`;
+          qHTML += <label><input type="radio" name="q${i}" value="${j}" required> ${c}</label><br>;
         });
-        qHTML += `</div>`;
+        qHTML += </div>;
         container.innerHTML += qHTML;
       });
     }
@@ -191,28 +191,23 @@
       e.preventDefault();
       let score = 0;
       for (let i = 0; i < questions.length; i++) {
-        const selected = document.querySelector(`input[name=q${i}]:checked`);
+        const selected = document.querySelector(input[name=q${i}]:checked);
         if (selected) score += parseInt(selected.value);
       }
       const suicidal = parseInt(document.querySelector("input[name='q8']:checked").value);
-      const formData = new FormData(document.getElementById("phqForm"));
-      const fname = encodeURIComponent(formData.get("fname"));
-      const lname = encodeURIComponent(formData.get("lname"));
-      const studentId = encodeURIComponent(formData.get("studentId") || "");
-      
       if (score >= 9 || suicidal > 0) {
         alert("คุณมีแนวโน้มที่จะมีภาวะซึมเศร้า หรือความคิดฆ่าตัวตาย กรุณาทำแบบประเมิน 8Q ต่อเพื่อประเมินความเสี่ยงเพิ่มเติม");
-        window.location.href = `assessment_8q.html?fname=${fname}&lname=${lname}&studentId=${studentId}`;
+        window.location.href = "assessment_8q.html"; // Change according to your path
         return;
       }
 
       // If conditions are not met, display results normally
       const result = interpret(score);
       const box = document.getElementById("result");
-      box.className = `result ${result.class}`;
-      box.innerHTML = `<h3>คะแนนรวม: ${score}</h3><p><strong>${result.level}</strong></p><p>${result.advice}</p>`;
+      box.className = result ${result.class};
+      box.innerHTML = <h3>คะแนนรวม: ${score}</h3><p><strong>${result.level}</strong></p><p>${result.advice}</p>;
       if (result.link) {
-        box.innerHTML += `<a class='booking-button' href='https://outlook.office365.com/owa/calendar/GrowthMindCenter@kmitl.ac.th/bookings/' target='_blank'>จองพบนักจิตวิทยา</a>`;
+        box.innerHTML += <a class='booking-button' href='https://outlook.office365.com/owa/calendar/GrowthMindCenter@kmitl.ac.th/bookings/' target='_blank'>จองพบนักจิตวิทยา</a>;
       }
       box.style.display = "block";
 
@@ -228,8 +223,8 @@
       dataToSubmit.level = result.level;
 
       for (let i = 0; i < 9; i++) {
-        const selected = document.querySelector(`input[name=q${i}]:checked`);
-        dataToSubmit[`q${i}`] = selected ? selected.value : "";
+        const selected = document.querySelector(input[name=q${i}]:checked);
+        dataToSubmit[q${i}] = selected ? selected.value : "";
       }
 
       // *** IMPORTANT: Replace with your actual Web App URL from Google Apps Script ***
